@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile App Settings</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #add8e6;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .app-container {
+      background-color: #add8e6;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .settings-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background-color: #add8e6;
+      border-radius: 8px;
+      border-bottom: 2px solid #ddd; /* Grid-like divider */
+    }
+
+    .settings-item:last-child {
+      border-bottom: none; /* Remove the border from the last item */
+    }
+
+    .settings-item label {
+      font-size: 16px;
+    }
+
+    /* Toggle Switch Styles */
+    .toggle {
+      position: relative;
+      width: 40px;
+      height: 22px;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle span {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #ccc;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .toggle span:before {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 18px;
+      height: 18px;
+      background-color: #2b8b33;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+
+    .toggle input:checked + span {
+      background-color: #4CAF50;
+    }
+
+    .toggle input:checked + span:before {
+      transform: translateX(18px);
+    }
+
+    select, input[type="range"] {
+      width: 100%;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .slider {
+      margin: 10px 0;
+    }
+
+    .slider input {
+      width: 100%;
+    }
+
+    .language-region {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .language-region select {
+      width: 48%;
+    }
+
+    .button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      margin-top: 20px;
+    }
+
+    .button:hover {
+      background-color: #45a049;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <h2>Home Settings</h2>
+
+    <!-- Notification Toggle -->
+    <div class="settings-item">
+      <label for="notifications">Notifications</label>
+      <label class="toggle">
+        <input type="checkbox" id="notifications">
+        <span></span>
+      </label>
+    </div>
+
+    <!-- Language Selection -->
+    <div class="settings-item">
+      <label for="language">Language</label>
+      <select id="language">
+        <option value="">Select Language</option>
+        <option value="en">English</option>
+        <option value="es">Tagalog</option>
+      </select>
+    </div>
+
+    <!-- Region Selection (Initially Hidden) -->
+    <div id="region-container" class="settings-item hidden">
+      <label for="region">Region</label>
+      <select id="region">
+        <option value="">Select Region</option>
+        <option value="us">United States</option>
+        <option value="mx">Mexico</option>
+        <option value="fr">France</option>
+      </select>
+    </div>
+
+    <!-- Volume Control -->
+    <div class="settings-item slider">
+      <label for="volume">Volume</label>
+      <input type="range" id="volume" min="0" max="100" value="50">
+    </div>
+
+    <!-- Voice Narrator Toggle -->
+    <div class="settings-item">
+      <label for="voice-narrator">Voice Narrator</label>
+      <label class="toggle">
+        <input type="checkbox" id="voice-narrator">
+        <span></span>
+      </label>
+    </div>
+
+    <!-- Biometrics Toggle -->
+    <div class="settings-item">
+      <label for="biometrics">Biometrics</label>
+      <label class="toggle">
+        <input type="checkbox" id="biometrics">
+        <span></span>
+      </label>
+    </div>
+
+    <div class="button" id="save-button">Save Settings</div>
+  </div>
+
+  <script>
+    // JavaScript to handle toggling of the settings
+    document.getElementById('save-button').addEventListener('click', function() {
+      const notifications = document.getElementById('notifications').checked ? 'On' : 'Off';
+      const language = document.getElementById('language').value;
+      const region = document.getElementById('region').value;
+      const volume = document.getElementById('volume').value;
+      const voiceNarrator = document.getElementById('voice-narrator').checked ? 'On' : 'Off';
+      const biometrics = document.getElementById('biometrics').checked ? 'On' : 'Off';
+
+      alert(`Settings Saved:
+      Notifications: ${notifications}
+      Language: ${language}
+      Region: ${region}
+      Volume: ${volume}
+      Voice Narrator: ${voiceNarrator}
+      Biometrics: ${biometrics}`);
+    });
+
+    // Show the region selection based on language selection
+    document.getElementById('language').addEventListener('change', function() {
+      const language = this.value;
+      const regionContainer = document.getElementById('region-container');
+
+      // Show region dropdown only if a language is selected
+      if (language) {
+        regionContainer.classList.remove('hidden');
+      } else {
+        regionContainer.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
